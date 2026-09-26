@@ -4,3 +4,4 @@ export * from './errorHandling';
 export * from './env';
 export * from './validation';
 export * from './formatting';
+export * from './permissions';
