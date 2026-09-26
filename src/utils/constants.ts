@@ -1,0 +1,101 @@
+export const APP_NAME = 'DCONTROL';
+export const APP_VERSION = '1.0.0';
+
+export const ATTENDANCE_TYPES = {
+  IN: 'IN',
+  OUT: 'OUT',
+  LUNCH_IN: 'LUNCH_IN',
+  LUNCH_OUT: 'LUNCH_OUT',
+} as const;
+
+export const TASK_STATUS = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+} as const;
+
+export const TASK_PRIORITY = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT',
+} as const;
+
+export const USER_ROLES = {
+  ADMIN: 'ADMIN',
+  SUPERVISOR: 'SUPERVISOR',
+  MERCHANDISER: 'MERCHANDISER',
+  OPERATOR: 'OPERATOR',
+} as const;
+
+export const API_TIMEOUT = 30000; // 30 seconds
+export const SYNC_INTERVAL = 5 * 60 * 1000; // 5 minutes
+export const TOKEN_REFRESH_THRESHOLD = 5 * 60 * 1000; // Refresh 5 mins before expiry
+
+export const PHOTO_CONFIG = {
+  MAX_SIZE: 5 * 1024 * 1024, // 5 MB
+  MAX_WIDTH: 1920,
+  MAX_HEIGHT: 1080,
+  QUALITY: 0.8,
+  RETENTION_DAYS: 60,
+};
+
+export const LOCATION_CONFIG = {
+  MIN_ACCURACY: 50, // meters
+  UPDATE_INTERVAL: 5000, // 5 seconds
+  TIMEOUT: 10000, // 10 seconds
+};
+
+export const STORAGE_KEYS = {
+  AUTH_STATE: '@auth',
+  ACCESS_TOKEN: '@access_token',
+  REFRESH_TOKEN: '@refresh_token',
+  USER_DATA: '@user_data',
+  ATTENDANCE: '@attendance',
+  TASKS: '@tasks',
+  SYNC_QUEUE: '@sync_queue',
+  LAST_SYNC: '@last_sync',
+  APP_SETTINGS: '@app_settings',
+} as const;
+
+export const ERROR_CODES = {
+  // Network
+  NETWORK_ERROR: 'NETWORK_ERROR',
+  TIMEOUT: 'TIMEOUT',
+  NO_CONNECTION: 'NO_CONNECTION',
+
+  // Auth
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  TOKEN_EXPIRED: 'TOKEN_EXPIRED',
+  UNAUTHORIZED: 'UNAUTHORIZED',
+  FORBIDDEN: 'FORBIDDEN',
+  SESSION_EXPIRED: 'SESSION_EXPIRED',
+
+  // Validation
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  INVALID_INPUT: 'INVALID_INPUT',
+
+  // Server
+  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
+  NOT_FOUND: 'NOT_FOUND',
+  CONFLICT: 'CONFLICT',
+
+  // Sync
+  SYNC_ERROR: 'SYNC_ERROR',
+  CONFLICT_DETECTED: 'CONFLICT_DETECTED',
+
+  // Device
+  PERMISSION_DENIED: 'PERMISSION_DENIED',
+  BIOMETRIC_NOT_AVAILABLE: 'BIOMETRIC_NOT_AVAILABLE',
+  CAMERA_ERROR: 'CAMERA_ERROR',
+  LOCATION_ERROR: 'LOCATION_ERROR',
+} as const;
+
+export const PERMISSIONS = {
+  CAMERA: 'CAMERA',
+  LOCATION: 'LOCATION',
+  BIOMETRIC: 'BIOMETRIC',
+  PHOTO_LIBRARY: 'PHOTO_LIBRARY',
+  NOTIFICATIONS: 'NOTIFICATIONS',
+} as const;
