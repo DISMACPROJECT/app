@@ -23,10 +23,14 @@ export const TASK_PRIORITY = {
 } as const;
 
 export const USER_ROLES = {
-  ADMIN: 'ADMIN',
-  SUPERVISOR: 'SUPERVISOR',
-  MERCHANDISER: 'MERCHANDISER',
-  OPERATOR: 'OPERATOR',
+  ADMIN: 'ADMIN',                      // Todos los permisos
+  ASIGNADORES: 'ASIGNADORES',          // Solo asignan tareas
+  MERCADERISTAS: 'MERCADERISTAS',      // Solo hacen tareas
+  OBRA: 'OBRA',                        // Gestiona visitas a obra
+  BIOMETRICO: 'BIOMETRICO',            // Sistema biométrico
+  PLANTA: 'PLANTA',                    // Crear usuarios y usarlos en biométrico
+  ADMINISTRATIVO: 'ADMINISTRATIVO',    // Registrar biométrico
+  RUTA: 'RUTA',                        // Tareas de despacho
 } as const;
 
 export const API_TIMEOUT = 30000; // 30 seconds

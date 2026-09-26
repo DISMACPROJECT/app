@@ -57,7 +57,15 @@ export interface SyncQueueItem {
   status: 'PENDING' | 'SYNCING' | 'SYNCED' | 'FAILED';
 }
 
-export type UserRole = 'ADMIN' | 'SUPERVISOR' | 'MERCHANDISER' | 'OPERATOR';
+export type UserRole =
+  | 'ADMIN'
+  | 'ASIGNADORES'
+  | 'MERCADERISTAS'
+  | 'OBRA'
+  | 'BIOMETRICO'
+  | 'PLANTA'
+  | 'ADMINISTRATIVO'
+  | 'RUTA';
 
 export interface ErrorWithCode {
   code: string;
