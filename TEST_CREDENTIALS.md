@@ -38,9 +38,9 @@ Estado:   ✅ Activo
 ### 4️⃣ Planta
 ```
 Email:    planta@dismac.com.ec
-Password: (Pendiente)
+Password: 1234
 Rol:      PLANTA
-Estado:   ⏳ Pendiente de password
+Estado:   ✅ Activo
 ```
 **Uso**: Testing de marcajes en planta
 
