@@ -16,14 +16,20 @@ export const authService = {
     try {
       log.info('Initiating login', { email: payload.email });
       const client = getApiClient();
-      const response = await client.post<ApiResponse<AuthResponse>>(
+      const response = await client.post<any>(
         ENDPOINTS.AUTH.LOGIN,
         payload
       );
 
-      if (response.data.status === 'success' && response.data.data) {
-        log.info('Login successful', { userId: response.data.data.user.id });
-        return response.data.data;
+      const data = response.data;
+      if (data.success || data.status === 'success') {
+        const authResponse: AuthResponse = {
+          user: data.user,
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+        };
+        log.info('Login successful', { userId: authResponse.user.id });
+        return authResponse;
       }
 
       throw new Error('Invalid login response format');
@@ -37,14 +43,19 @@ export const authService = {
     try {
       log.info('Refreshing token');
       const client = getApiClient();
-      const response = await client.post<ApiResponse<AuthTokens>>(
+      const response = await client.post<any>(
         ENDPOINTS.AUTH.REFRESH_TOKEN,
         payload
       );
 
-      if (response.data.status === 'success' && response.data.data) {
+      const data = response.data;
+      if (data.success || data.status === 'success') {
+        const tokens: AuthTokens = {
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken || payload.refreshToken,
+        };
         log.info('Token refresh successful');
-        return response.data.data;
+        return tokens;
       }
 
       throw new Error('Invalid refresh token response format');
