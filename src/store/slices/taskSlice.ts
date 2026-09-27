@@ -1,16 +1,54 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TasksState, Task, TaskStatus, TaskPriority } from '@types/task';
+import { getApiClient } from '@services/api/client';
+import { ENDPOINTS } from '@services/api/endpoints';
 
 const initialState: TasksState = {
   tasks: [],
   selectedTask: null,
   filters: {},
   stats: null,
+  loading: false,
   isLoading: false,
   isSyncing: false,
   error: null,
   lastUpdated: null,
 };
+
+export const getTasks = createAsyncThunk(
+  'tasks/get',
+  async (_, { rejectWithValue }) => {
+    try {
+      const client = getApiClient();
+      const response = await client.get(ENDPOINTS.TASKS.LIST);
+      return response.data.tasks || [];
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.error || 'Error al obtener tareas'
+      );
+    }
+  }
+);
+
+export const updateTaskStatus = createAsyncThunk(
+  'tasks/updateStatus',
+  async (
+    { taskId, status }: { taskId: string; status: TaskStatus },
+    { rejectWithValue }
+  ) => {
+    try {
+      const client = getApiClient();
+      const response = await client.put(ENDPOINTS.TASKS.UPDATE(taskId), {
+        status,
+      });
+      return response.data.task;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.error || 'Error al actualizar tarea'
+      );
+    }
+  }
+);
 
 const taskSlice = createSlice({
   name: 'tasks',
@@ -55,6 +93,7 @@ const taskSlice = createSlice({
     },
     setLoading: (state, action) => {
       state.isLoading = action.payload;
+      state.loading = action.payload;
     },
     setSyncing: (state, action) => {
       state.isSyncing = action.payload;
@@ -73,6 +112,39 @@ const taskSlice = createSlice({
       state.error = null;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getTasks.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getTasks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tasks = action.payload;
+        state.lastUpdated = Date.now();
+      })
+      .addCase(getTasks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateTaskStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateTaskStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.tasks.findIndex(
+          (t) => t.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
+      })
+      .addCase(updateTaskStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  },
 });
 
 export const {
@@ -90,5 +162,7 @@ export const {
   clearError,
   clearTasks,
 } = taskSlice.actions;
+
+export { getTasks, updateTaskStatus };
 
 export default taskSlice.reducer;
