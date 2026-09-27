@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { getTasks, updateTaskStatus } from '@store/slices/taskSlice';
+import { notificationService } from '@services/notifications/notificationService';
 import { usePermissions } from '@hooks/usePermissions';
 import { colors } from '@theme/colors';
 import { spacing } from '@theme/spacing';
@@ -52,10 +53,14 @@ const TaskListScreen = () => {
 
   const handleCompleteTask = async (taskId: string) => {
     try {
+      const task = tasks.find((t) => t.id === taskId);
       await dispatch(
         updateTaskStatus({ taskId, status: 'COMPLETED' })
       ).unwrap();
       Alert.alert('Éxito', 'Tarea marcada como completada');
+      if (task?.title) {
+        await notificationService.notifyTaskCompleted(task.title);
+      }
       loadTasks();
     } catch (error: any) {
       Alert.alert('Error', error.message || 'No se pudo actualizar la tarea');

@@ -13,6 +13,7 @@ import {
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { driveService, PhotoUploadResult } from '@services/storage/driveService';
+import { notificationService } from '@services/notifications/notificationService';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { colors } from '@theme/colors';
 import { spacing } from '@theme/spacing';
@@ -68,6 +69,7 @@ const TaskDetailScreen: React.FC<TaskDetailScreenProps> = ({ route }) => {
 
       if (result) {
         Alert.alert('Éxito', 'Foto cargada correctamente');
+        await notificationService.notifyPhotoUploaded(result.fileName);
         loadPhotos();
       }
     } catch (error: any) {
@@ -91,6 +93,7 @@ const TaskDetailScreen: React.FC<TaskDetailScreenProps> = ({ route }) => {
 
       if (result) {
         Alert.alert('Éxito', 'Foto cargada correctamente');
+        await notificationService.notifyPhotoUploaded(result.fileName);
         loadPhotos();
       }
     } catch (error: any) {

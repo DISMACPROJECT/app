@@ -6,6 +6,7 @@ import { ActivityIndicator, View } from 'react-native';
 import { store, persistor } from '@store/index';
 import { initializeApiClient } from '@services/api';
 import { secureStorage } from '@services/storage';
+import { notificationService } from '@services/notifications/notificationService';
 import { STORAGE_KEYS } from '@utils/constants';
 import RootNavigator from '@navigation/RootNavigator';
 import { colors } from '@theme/colors';
@@ -16,6 +17,17 @@ const getAccessToken = async () => {
 
 // Initialize API client on app startup
 initializeApiClient(getAccessToken);
+
+// Initialize notifications on app startup
+const initializeNotifications = async () => {
+  try {
+    await notificationService.requestPermissions();
+  } catch (error) {
+    console.error('Error initializing notifications:', error);
+  }
+};
+
+initializeNotifications();
 
 const LoadingComponent = () => (
   <View

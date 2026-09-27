@@ -11,6 +11,7 @@ import {
 import * as Location from 'expo-location';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { markAttendance, getAttendanceHistory } from '@store/slices/attendanceSlice';
+import { notificationService } from '@services/notifications/notificationService';
 import { colors } from '@theme/colors';
 import { spacing } from '@theme/spacing';
 import { typography } from '@theme/typography';
@@ -77,6 +78,7 @@ const AttendanceScreen = () => {
         'Éxito',
         `Marcaje de ${type === 'IN' ? 'entrada' : 'salida'} registrado`
       );
+      await notificationService.notifyAttendanceMarked(type);
       if (user?.id) {
         dispatch(getAttendanceHistory({ userId: user.id, days: 1 }));
       }

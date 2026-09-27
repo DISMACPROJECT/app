@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { usePermissions } from '@hooks/usePermissions';
 import { getTasks } from '@store/slices/taskSlice';
 import { getAttendanceHistory } from '@store/slices/attendanceSlice';
+import { notificationService } from '@services/notifications/notificationService';
 import { colors } from '@theme/colors';
 import { spacing } from '@theme/spacing';
 import { typography } from '@theme/typography';
@@ -102,12 +103,13 @@ const ReportsScreen = () => {
     setStats(newStats);
   };
 
-  const handleGenerateReport = () => {
+  const handleGenerateReport = async () => {
     if (startDate > endDate) {
       Alert.alert('Error', 'La fecha inicial debe ser anterior a la fecha final');
       return;
     }
     calculateStats();
+    await notificationService.notifyReportGenerated(reportType);
   };
 
   const handleStartDateChange = (event: any, selectedDate?: Date) => {
