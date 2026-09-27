@@ -9,6 +9,8 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { getTasks, updateTaskStatus } from '@store/slices/taskSlice';
 import { usePermissions } from '@hooks/usePermissions';
@@ -19,7 +21,10 @@ import { formatDate } from '@utils/formatting';
 
 type FilterType = 'all' | 'assigned' | 'created';
 
+type TasksNavigationProp = NativeStackNavigationProp<any>;
+
 const TaskListScreen = () => {
+  const navigation = useNavigation<TasksNavigationProp>();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { tasks, loading } = useAppSelector((state) => state.tasks);
@@ -107,7 +112,10 @@ const TaskListScreen = () => {
   const filteredTasks = getFilteredTasks();
 
   const renderTaskItem = ({ item }: any) => (
-    <View style={styles.taskCard}>
+    <TouchableOpacity
+      style={styles.taskCard}
+      onPress={() => navigation.navigate('TaskDetail', { taskId: item.id })}
+    >
       <View style={styles.taskHeader}>
         <View style={styles.taskTitleSection}>
           <Text style={styles.taskTitle} numberOfLines={2}>
@@ -153,7 +161,7 @@ const TaskListScreen = () => {
           <Text style={styles.taskId}>{item.id.substring(0, 8)}...</Text>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
